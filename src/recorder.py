@@ -1,50 +1,45 @@
 import pyaudio
 import wave
+import datetime
 import os
-from datetime import datetime
 
-# Config
-AUDIO_DIR = "../data/audio_raw/"
-FILENAME_PREFIX = "session"
-CHANNELS = 1
-RATE = 44100
+# Audio recording parameters
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
-RECORD_SECONDS = 5
+CHANNELS = 1
+RATE = 44100
+RECORD_SECONDS = 5  # Adjust as needed
+AUDIO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'audio_raw')
 
-def record_audio(session_id, file_index, phrase_label="input"):
-    now = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{FILENAME_PREFIX}_{session_id}_{file_index}_{phrase_label}_{now}.wav"
-    filepath = os.path.join(AUDIO_DIR, filename)
+def get_timestamp():
+    return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    if not os.path.exists(AUDIO_DIR):
-        os.makedirs(AUDIO_DIR)
-
-    print(f"Recording for {RECORD_SECONDS} seconds...")
-
+def record_audio():
     audio = pyaudio.PyAudio()
     stream = audio.open(format=FORMAT, channels=CHANNELS,
-                        rate=RATE, input=True,
-                        frames_per_buffer=CHUNK)
-
+                        rate=RATE, input=True, frames_per_buffer=CHUNK)
+    print("Recording...")
     frames = []
     for _ in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-        data = stream.read(CHUNK)
-        frames.append(data)
+        frames.append(stream.read(CHUNK))
+    print("Finished recording.")
 
     stream.stop_stream()
     stream.close()
     audio.terminate()
 
-    with wave.open(filepath, 'wb') as wf:
+    if not os.path.exists(AUDIO_DIR):
+        os.makedirs(AUDIO_DIR)
+    filename = f"session_{get_timestamp()}.wav"
+    file_path = os.path.join(AUDIO_DIR, filename)
+
+    with wave.open(file_path, 'wb') as wf:
         wf.setnchannels(CHANNELS)
         wf.setsampwidth(audio.get_sample_size(FORMAT))
         wf.setframerate(RATE)
         wf.writeframes(b''.join(frames))
-
-    print(f"Saved: {filepath}")
-    return filepath
+    print(f"Saved recording to {file_path}")
+    return file_path
 
 if __name__ == "__main__":
-    record_audio("001", "01", "zuo_de_hao")
-
+    record_audio()
