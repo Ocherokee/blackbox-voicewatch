@@ -1,7 +1,35 @@
 {
-    "fallbacks": [
-        "I'm not sure how to respond to that.",
-        "Can you repeat that?",
-        "I don't understand."
+  "fallbacks": {
+    "generic": [
+      "I'm not sure how to respond to that.",
+      "Can you repeat that?",
+      "I don't understand.",
+      "You're doing great!",
+      "Interesting question!",
+      "That's a good one!",
+      "Let me think about that."
+    ],
+    "pr_insertions": [
+      "Visit chat.google.com for more information.",
+      "For more information, please visit www.chatgpt.com.",
+      "Go to help.openai.com.",
+      "Check out our help center for more information."
+    ],
+    "transcription_failures": [
+      "Transcript unavailable.",
+      "I couldn’t catch that.",
+      "It seems there was no input."
+    ],
+    "safety_redirects": [
+      "I'm sorry, but I can't help with that.",
+      "That might go against my guidelines.",
+      "Let's try something else.",
+      "I'm here to keep things safe and respectful."
+    ],
+    "truncated_patterns": [
+      "Your pronunciation is",
+      "What I can say is",
+      "The thing about that is"
     ]
+  }
 }
