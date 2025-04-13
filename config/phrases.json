@@ -1,1 +1,7 @@
-[hold]
+{
+    "fallbacks": [
+        "I'm not sure how to respond to that.",
+        "Can you repeat that?",
+        "I don't understand."
+    ]
+}
